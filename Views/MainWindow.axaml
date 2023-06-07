@@ -1,0 +1,66 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:GameOfLifeMvvm.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="900"
+        x:Class="GameOfLifeMvvm.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        CanResize="False"
+        Width="900"
+        Height="900"
+        Icon="/Assets/avalonia-logo.ico"
+        VerticalContentAlignment="Center"
+        Title="{Binding GenerationsTitle}">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+
+    <Window.Styles>
+        <Style Selector="Rectangle.young">
+            <Setter Property="Fill" Value="HotPink"></Setter>
+        </Style>
+        <Style Selector="Rectangle.old">
+            <Setter Property="Fill" Value="MediumPurple"></Setter>
+        </Style>
+        <Style Selector="Rectangle">
+            <Setter Property="Fill" Value="Black"></Setter>
+        </Style>
+    </Window.Styles>
+
+    <StackPanel Spacing="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10">
+        <Border BorderThickness="2" 
+                BorderBrush="White"
+                Background="Black"
+                CornerRadius="3"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Height="800">
+            <UniformGrid Name="Grid"
+                         Columns="{Binding Columns, Mode=OneTime}"
+                         Rows="{Binding Rows, Mode=OneTime}"
+                         VerticalAlignment="Stretch"
+                         HorizontalAlignment="Stretch">
+                <UniformGrid.DataTemplates>
+                    <DataTemplate x:DataType="vm:Cell">
+                        <Rectangle 
+                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Stretch"
+                            Stretch="Fill"
+                            Width="5" Height="5"
+                            Classes.young="{Binding IsYoung, Mode=OneWay}"
+                            Classes.old="{Binding IsOld, Mode=OneWay}" />
+                    </DataTemplate>
+                </UniformGrid.DataTemplates>
+            </UniformGrid>
+        </Border>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="5" Margin="5">
+            <Button Content="{Binding ToggleText}" Command="{Binding ToggleRunCommand}" />
+            <Button Content="◎ Randomize" Command="{Binding RandomizeCommand}" />
+        </StackPanel>
+    </StackPanel>
+
+</Window>
