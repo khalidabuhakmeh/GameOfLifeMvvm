@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace GameOfLifeMvvm.ViewModels;
 
-public partial class MainWindowViewModel : ViewModelBase
+public partial class MainWindowViewModel : ViewModelBase, IDisposable
 {
     private readonly Timer timer = new(200)
     {
@@ -168,9 +168,9 @@ public partial class MainWindowViewModel : ViewModelBase
             var rows = Rows;
             var columns = Columns;
             
-            for (var r = 0; r < rows - 1; r++)
+            for (var r = 0; r < rows; r++)
             {
-                for (var c = 0; c < columns - 1; c++)
+                for (var c = 0; c < columns; c++)
                 {
                     yield return Cells[r][c];
                 }
@@ -185,6 +185,10 @@ public partial class MainWindowViewModel : ViewModelBase
         ToggleText = timer.Enabled ? "⏸ Pause" : "▶ Run";
     }
 
+    public void Dispose()
+    {
+        timer.Dispose();
+    }
 }
 
 
